@@ -21,13 +21,14 @@ VIDEO_URL="webcam://0" python3 main.py
 > ```sh
 > export "FLASK_APP=main.py"
 > export "VIDEO_URL=http://webcam.rhein-taunus-krematorium.de/mjpg/video.mjpg"
-> 
+>
 > python3 -m flask run
 > ```
 
 ### Docker
 
 ```bash
+export DOCKER_BUILDKIT=1
 docker build -t rtspweb:local --file=docker/Dockerfile .
 
 docker run --rm -it -p 127.0.0.1:5000:5000 -e "VIDEO_URL=http://webcam.rhein-taunus-krematorium.de/mjpg/video.mjpg" rtspweb:local

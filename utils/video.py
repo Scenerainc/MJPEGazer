@@ -59,7 +59,7 @@ class VideoCapture:
                 frame = cv2.flip(frame, 1)
             image = cv2.imencode(".jpg", frame)[1]
             image = image.tobytes()
-            yield (b"--frame\r\n" + b"Content-Type: text/plain\r\n\r\n" + image + b"\r\n")
+            yield (b"--frame\r\n" + b"Content-Type: image/jpeg\r\n\r\n" + image + b"\r\n")
 
     def activate(self) -> 'VideoCapture':
         return self.__enter__()

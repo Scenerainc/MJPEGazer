@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .logger_utils import get_logger, DEBUG
-from .constants import DEBUG, MIRROR_IMAGE, FLASK_RUN_HOST, FLASK_RUN_PORT
+from .constants import DEBUG, MIRROR_IMAGE, FLASK_RUN_HOST, FLASK_RUN_PORT, VIDEO_URL
 from .exceptions import Errors, InitializationError
 from .video import VideoCapture
 
@@ -14,4 +14,5 @@ __all__ = [
     "VideoCapture",
     "FLASK_RUN_HOST",
     "FLASK_RUN_PORT",
+    "VIDEO_URL",
 ]

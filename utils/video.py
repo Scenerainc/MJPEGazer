@@ -18,8 +18,8 @@ class VideoCapture:
     camera_port: str | int
     _video_object: Optional[cv2.VideoCapture] = None
 
-    def __init__(self, camera_port: str | int = "webcam://0"):
-        if "webcam" in camera_port:
+    def __init__(self, camera_port: str | int):
+        if "webcam://" in camera_port:
             camera_port = int(camera_port.split("://")[-1])
         logger.debug("Using camera %s", camera_port)
         self.camera_port = camera_port
@@ -46,22 +46,20 @@ class VideoCapture:
         return self.__exit__()
 
     @property
-    def frames(self) -> Iterable[bytes]:
+    def http_frames(self) -> Iterable[bytes]:
         if not self._video_object:
             raise IndentationError("Please Launch VideoCapture first! i.e. video_capture_instance.activate()")
-        while True:
+        while self._video_object.isOpened():
             ret, frame = self._video_object.read()
             if not ret:
-                logger.error(
+                logger.warning(
                     "failed to capture images with %r: $r", self._video_object, image
                 )
-                break
+                #break
             if MIRROR_IMAGE:
                 frame = cv2.flip(frame, 1)
             image = cv2.imencode(".jpg", frame)[1]
-            yield image.tobytes()
-
-    @property
-    def http_frames(self) -> Iterable[bytes]:
-        for image in self.frames:
+            image = image.tobytes()
             yield (b"--frame\r\n" + b"Content-Type: image/jpeg\r\n\r\n" + image + b"\r\n")
+
+

@@ -13,7 +13,7 @@ TRUE_STRINGS: list[str] = [
         "y",
         "1",
     )
-] 
+]
 DEBUG: bool = getenv("DEBUG", "False").upper() in TRUE_STRINGS
 LOG_FORMAT: str = (
     "[%(asctime)s - %(levelname)s] %(name)s: "
@@ -24,3 +24,4 @@ MIRROR_IMAGE: bool = getenv("MIRROR_IMAGE", "False").upper() in TRUE_STRINGS
 
 FLASK_RUN_HOST: str = getenv("FLASK_RUN_HOST", "127.0.0.1")
 FLASK_RUN_PORT: int = int(getenv("FLASK_RUN_PORT", "5000"))
+VIDEO_URL: str = getenv("VIDEO_URL", "webcam://0")

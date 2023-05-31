@@ -1,0 +1,6 @@
+*
+!requirements.txt
+!Dockerfile
+!utils/*.py
+!*.py
+!*.md

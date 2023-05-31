@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import annotations
+from contextlib import suppress
 
 from typing import Iterable, Optional
 
@@ -20,6 +21,7 @@ class VideoCapture:
     def __init__(self, camera_port: str | int = "webcam://0"):
         if "webcam" in camera_port:
             camera_port = int(camera_port.split("://")[-1])
+        logger.debug("Using camera %s", camera_port)
         self.camera_port = camera_port
 
     def __enter__(self) -> "VideoCapture":
@@ -32,6 +34,8 @@ class VideoCapture:
         return self
 
     def __exit__(self, *args) -> bool:
+        with suppress(AttributeError):
+            del self._video_object
         self._video_object = None
         return None in args
 
@@ -47,9 +51,10 @@ class VideoCapture:
                 break
             ret, frame = self._video_object.read()
             if not ret:
-                logger.warning(
-                    "failed to capture image with %r: $r", self._video_object, image
+                logger.error(
+                    "failed to capture images with %r: $r", self._video_object, image
                 )
+                break
             if MIRROR_IMAGE:
                 frame = cv2.flip(frame, 1)
             image = cv2.imencode(".jpg", frame)[1]

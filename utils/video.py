@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from contextlib import suppress
-from typing import Generator, Iterable, Optional
+from typing import Iterable, Optional
 
 import cv2
 
@@ -32,11 +31,9 @@ class VideoCapture:
             raise InitializationError("Video object not available!")
         return self
 
-    def __exit__(self, exc0=None, exc1=None, exc2=None) -> bool:
-        with suppress(AttributeError):
-            del self._video_object
+    def __exit__(self, *args) -> bool:
         self._video_object = None
-        return False
+        return None in args
 
     @property
     def http_frames(self) -> Iterable[bytes]:
@@ -62,5 +59,5 @@ class VideoCapture:
     def activate(self) -> 'VideoCapture':
         return self.__enter__()
 
-    def close(self, *args, **kwargs) -> bool:
-        return self.__exit__(*args, **kwargs)
+    def close(self) -> bool:
+        return self.__exit__()

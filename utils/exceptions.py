@@ -4,5 +4,5 @@ class Errors(BaseException):
     """Local Errors"""
 
 
-class InitializationError(Exception):
+class InitializationError(Errors):
     """Initialization Error"""

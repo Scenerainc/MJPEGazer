@@ -22,14 +22,9 @@ def live() -> Response:
 
 
 if __name__ == "__main__":
-    endpoint = dict(
-        host=FLASK_RUN_HOST,
-        port=FLASK_RUN_PORT
-    )
-
     try:
         FRAME_SERVER.activate()
-        app.run(**endpoint, debug=DEBUG)
+        app.run(host=FLASK_RUN_HOST, port=FLASK_RUN_PORT, debug=DEBUG)
     except KeyboardInterrupt:
         pass
     except Exception as _e:

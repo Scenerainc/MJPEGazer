@@ -20,7 +20,7 @@ LOG_FORMAT: str = (
     + "[%(filename)s:%(lineno)s] %(funcName)s() - %(message)s"
 )
 LOG_FILE: Optional[str] = getenv("LOG_FILE", None)
-MIRROR_IMAGE: bool = getenv("MIRROR_IMAGE", "True").upper() in TRUE_STRINGS
+MIRROR_IMAGE: bool = getenv("MIRROR_IMAGE", "False").upper() in TRUE_STRINGS
 
 FLASK_RUN_HOST: str = getenv("FLASK_RUN_HOST", "127.0.0.1")
 FLASK_RUN_PORT: int = int(getenv("FLASK_RUN_PORT", "5000"))

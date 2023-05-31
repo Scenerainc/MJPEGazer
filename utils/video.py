@@ -35,20 +35,21 @@ class VideoCapture:
 
     def __exit__(self, *args) -> bool:
         with suppress(AttributeError):
-            del self._video_object
+            self._video_object.release()
         self._video_object = None
         return None in args
 
-    @property
-    def http_frames(self) -> Iterable[bytes]:
-        """Generator Object
+    def activate(self) -> 'VideoCapture':
+        return self.__enter__()
 
-        :yield: Image Frames
-        :rtype: Generator
-        """
+    def close(self) -> bool:
+        return self.__exit__()
+
+    @property
+    def frames(self) -> Iterable[bytes]:
+        if not self._video_object:
+            raise IndentationError("Please Launch VideoCapture first! i.e. video_capture_instance.activate()")
         while True:
-            if not self._video_object:
-                break
             ret, frame = self._video_object.read()
             if not ret:
                 logger.error(
@@ -58,11 +59,9 @@ class VideoCapture:
             if MIRROR_IMAGE:
                 frame = cv2.flip(frame, 1)
             image = cv2.imencode(".jpg", frame)[1]
-            image = image.tobytes()
+            yield image.tobytes()
+
+    @property
+    def http_frames(self) -> Iterable[bytes]:
+        for image in self.frames:
             yield (b"--frame\r\n" + b"Content-Type: image/jpeg\r\n\r\n" + image + b"\r\n")
-
-    def activate(self) -> 'VideoCapture':
-        return self.__enter__()
-
-    def close(self) -> bool:
-        return self.__exit__()

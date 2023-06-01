@@ -24,6 +24,7 @@ app = Flask(__name__)
 
 @app.route("/live")
 def live() -> Response:
+    FRAME_SERVER.activate()
     return Response(
         FRAME_SERVER.http_frames, mimetype="multipart/x-mixed-replace; boundary=frame"
     )

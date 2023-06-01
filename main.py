@@ -5,7 +5,14 @@ from __future__ import annotations
 
 from flask import Flask, Response
 
-from utils import get_logger, DEBUG, VideoCapture, FLASK_RUN_PORT, FLASK_RUN_HOST, VIDEO_URL
+from utils import (
+    get_logger,
+    DEBUG,
+    VideoCapture,
+    FLASK_RUN_PORT,
+    FLASK_RUN_HOST,
+    VIDEO_URL,
+)
 
 logger = get_logger(__name__)
 
@@ -13,6 +20,7 @@ FRAME_SERVER = VideoCapture(camera_port=VIDEO_URL)
 FRAME_SERVER.activate()
 
 app = Flask(__name__)
+
 
 @app.route("/live")
 def live() -> Response:

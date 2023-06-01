@@ -39,7 +39,7 @@ class VideoCapture:
         self._video_object = None
         return None in args
 
-    def activate(self) -> 'VideoCapture':
+    def activate(self) -> "VideoCapture":
         return self.__enter__()
 
     def close(self) -> bool:
@@ -48,18 +48,20 @@ class VideoCapture:
     @property
     def http_frames(self) -> Iterable[bytes]:
         if not self._video_object:
-            raise IndentationError("Please Launch VideoCapture first! i.e. video_capture_instance.activate()")
+            raise IndentationError(
+                "Please Launch VideoCapture first! i.e. video_capture_instance.activate()"
+            )
         while self._video_object.isOpened():
             ret, frame = self._video_object.read()
             if not ret:
                 logger.warning(
                     "failed to capture images with %r: $r", self._video_object, image
                 )
-                #break
+                # break
             if MIRROR_IMAGE:
                 frame = cv2.flip(frame, 1)
             image = cv2.imencode(".jpg", frame)[1]
             image = image.tobytes()
-            yield (b"--frame\r\n" + b"Content-Type: image/jpeg\r\n\r\n" + image + b"\r\n")
-
-
+            yield (
+                b"--frame\r\n" + b"Content-Type: image/jpeg\r\n\r\n" + image + b"\r\n"
+            )

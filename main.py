@@ -24,7 +24,13 @@ app = Flask(__name__)
 
 @app.route("/live")
 def live() -> Response:
-    FRAME_SERVER.activate()
+    """Caveats:
+
+    OpenCV fails reading frames,
+    cv2.VideoCapture object has to be recreated to resolve.
+
+    This is done by calling `FRAME_SERVER.active()` again, i.e. reload the page
+    """
     return Response(
         FRAME_SERVER.http_frames, mimetype="multipart/x-mixed-replace; boundary=frame"
     )

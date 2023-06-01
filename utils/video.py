@@ -26,8 +26,11 @@ class VideoCapture:
 
     def __enter__(self) -> "VideoCapture":
         if self._video_object:
-            return self
+            ret, frame = self._video_object.read()
+            if ret:
+                return self
 
+        self.__exit__()
         self._video_object = cv2.VideoCapture(self.camera_port)
         if not self._video_object.isOpened():
             raise InitializationError("Video object not available!")
@@ -45,21 +48,39 @@ class VideoCapture:
     def close(self) -> bool:
         return self.__exit__()
 
-    @property
-    def http_frames(self) -> Iterable[bytes]:
+    def get_frame(self) -> Optional[cv2.Mat]:
         if not self._video_object:
-            raise IndentationError(
-                "Please Launch VideoCapture first! i.e. video_capture_instance.activate()"
+            raise InitializationError("Please launch the instance instance.launch()")
+        ret, frame = self._video_object.read()
+        if not ret:
+            logger.warning(
+                "failed to capture images with %s: %s",
+                self._video_object,
+                self.camera_port,
+            )
+            return None
+        if MIRROR_IMAGE:
+            return cv2.flip(frame, 1)
+        return frame
+
+    def __iter__(self) -> Iterable[cv2.Mat]:
+        if not self._video_object:
+            raise InitializationError(
+                'Invalid Usage, example:\n\twith VideoCapture() as frame_server:\n\t\tfor image in frame_server:\n\t\t\tprint(f"received an image with type {type(i)}")'
             )
         while self._video_object.isOpened():
-            ret, frame = self._video_object.read()
-            if not ret:
-                logger.warning(
-                    "failed to capture images with %s: %s", self._video_object, self.camera_port
-                )
+            frame = self.get_frame()
+            if not frame:
                 continue
-            if MIRROR_IMAGE:
-                frame = cv2.flip(frame, 1)
+            yield frame
+
+    @property
+    def http_frames(self) -> Iterable[bytes]:
+        self.activate()
+        while self._video_object.isOpened():
+            frame = self.get_frame()
+            if frame is None:
+                continue
             image = cv2.imencode(".jpg", frame)[1]
             image = image.tobytes()
             yield (

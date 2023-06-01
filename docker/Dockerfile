@@ -34,8 +34,8 @@ RUN --mount=type=bind,target=/wheels,source=/local/wheels,from=wheels	\
 FROM runtime
 WORKDIR /app
 
-ENV DEBUG=True
-ENV FLASK_DEBUG=True
+#ENV DEBUG=True
+#ENV FLASK_DEBUG=True
 ENV FLASK_APP=main.py
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=5000

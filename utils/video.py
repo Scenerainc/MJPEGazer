@@ -57,7 +57,7 @@ class VideoCapture:
                 logger.warning(
                     "failed to capture images with %r: $r", self._video_object, image
                 )
-                # break
+                continue
             if MIRROR_IMAGE:
                 frame = cv2.flip(frame, 1)
             image = cv2.imencode(".jpg", frame)[1]

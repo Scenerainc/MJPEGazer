@@ -1,6 +1,7 @@
 *
 !requirements.txt
-!Dockerfile
+!docker/gunicorn_config.py
+
 !utils/*.py
 !*.py
 !*.md

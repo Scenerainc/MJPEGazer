@@ -1,5 +1,7 @@
 # Title
 
+This is an OpenCV HTTP mjpeg server, suitable for viewing RTSP streams in a (supported) browser.
+
 ## Getting started:
 
 > Optional

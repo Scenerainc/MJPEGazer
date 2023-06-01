@@ -29,7 +29,7 @@ def live() -> Response:
     OpenCV fails reading frames,
     cv2.VideoCapture object has to be recreated to resolve.
 
-    This is done by calling `FRAME_SERVER.active()` again, i.e. reload the page
+    This is done by calling `FRAME_SERVER.activate()` again, i.e. reload the page
     """
     return Response(
         FRAME_SERVER.http_frames, mimetype="multipart/x-mixed-replace; boundary=frame"

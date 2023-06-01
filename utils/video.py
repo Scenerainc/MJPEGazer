@@ -55,7 +55,7 @@ class VideoCapture:
             ret, frame = self._video_object.read()
             if not ret:
                 logger.warning(
-                    "failed to capture images with %r: $r", self._video_object, image
+                    "failed to capture images with %s: %s", self._video_object, self.camera_port
                 )
                 continue
             if MIRROR_IMAGE:

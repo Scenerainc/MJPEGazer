@@ -8,6 +8,45 @@ services:
       dockerfile: docker/Dockerfile
     environment:
       - VIDEO_URL=http://webcam.rhein-taunus-krematorium.de/mjpg/video.mjpg
-    ports:
-      - 5000:5000
+    expose:
+      - 5000/tcp
+    networks:
+      - backend
+    deploy:
+      mode: replicated
+      replicas: 4
+      endpoint_mode: vip
+    logging:
+      driver: journald
+    labels:
+      autoheal: true
     restart: always
+
+  autoheal:
+    image: willfarrell/autoheal
+    restart: always
+    container_name: autoheal
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: "autoheal"
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+
+  nginx:
+    extends:
+      file: nginx/docker/service.yml
+      service: nginx
+    depends_on:
+      opencv_server:
+        condition: service_started
+    ports:
+      - "0.0.0.0:80:80/tcp"
+    networks:
+      - backend
+    labels:
+      autoheal: true
+
+networks:
+  backend:
+    external: False

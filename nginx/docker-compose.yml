@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  nginx:
+    extends:
+      file: docker/service.yml
+      service: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      FILE_WARNING: "${FILE_WARNING:?You are about to run Nginx standalone\nperhaps you are in the wrong folder?}"

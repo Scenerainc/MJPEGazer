@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+     - "../html:/usr/share/nginx/html"
+     - "../config/includes:/etc/nginx/includes"
+     - "../config/conf.d:/etc/nginx/conf.d"
+#     - "../config/conf.d:/etc/nginx/conf.d"
+    healthcheck:
+      test: ["CMD", "/bin/bash", "-c", 'curl -s -f http://localhost:80/']
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: journald
+

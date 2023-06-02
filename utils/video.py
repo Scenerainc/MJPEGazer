@@ -29,10 +29,10 @@ class VideoCapture:
         logger.debug("Using camera %s", camera_port)
         self.camera_port = camera_port
         video_object = cv2.VideoCapture(
-                self.camera_port,
-                cv2.CAP_FFMPEG,
+            self.camera_port,
+            cv2.CAP_FFMPEG,
         )
-        if not self._video_object.isOpened():
+        if not video_object.isOpened():
             raise InitializationError("Video object not available!")
         self._video_object = video_object
 
@@ -57,6 +57,13 @@ class VideoCapture:
         if not self.healthy:
             self.__exit__()
             self.__enter__()
+
+    def __iter__(self) -> Iterable[cv2.Mat]:
+        while True:
+            frame = self.get_frame()
+            if frame is None:
+                continue
+            yield frame
 
     def activate(self) -> "VideoCapture":
         return self.__enter__()
@@ -84,13 +91,6 @@ class VideoCapture:
     @property
     def healthy(self) -> bool:
         return self._failures < 42
-
-    def __iter__(self) -> Iterable[cv2.Mat]:
-        while True:
-            frame = self.get_frame()
-            if frame is None:
-                continue
-            yield frame
 
     @property
     def http_frames(self) -> Iterable[bytes]:

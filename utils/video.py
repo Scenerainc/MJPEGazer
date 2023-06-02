@@ -28,18 +28,22 @@ class VideoCapture:
         self._lock = lock
         logger.debug("Using camera %s", camera_port)
         self.camera_port = camera_port
-        self.__enter__()
+        video_object = cv2.VideoCapture(
+                self.camera_port,
+                cv2.CAP_FFMPEG,
+        )
+        if not self._video_object.isOpened():
+            raise InitializationError("Video object not available!")
+        self._video_object = video_object
 
     def __enter__(self) -> "VideoCapture":
-        if self._video_object:
-            return self
         with self._lock:
+            if self._video_object:
+                return self
             self._video_object = cv2.VideoCapture(
                 self.camera_port,
                 cv2.CAP_FFMPEG,
             )
-            if not self._video_object.isOpened():
-                raise InitializationError("Video object not available!")
 
     def __exit__(self, *_) -> bool:
         with self._lock:

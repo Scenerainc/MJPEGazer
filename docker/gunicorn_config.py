@@ -5,7 +5,7 @@ port = getenv("FLASK_RUN_PORT", "5000")
 
 bind = f"{host}:{port}"
 
-workers = 8
-threads = 8
+workers = 2
+threads = 2
 timeout = 10
 # preload_app = True

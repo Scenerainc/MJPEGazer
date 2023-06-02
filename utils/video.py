@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 from contextlib import suppress
-from time import sleep
 from threading import Lock
 from typing import Iterable, Optional
 
@@ -31,15 +30,7 @@ class VideoCapture:
         self.camera_port = camera_port
         self.__enter__()
 
-    def __call__(self) -> "VideoCapture":
-        logger.debug("got called")
-        if self.healthy:
-            return self
-        self.__exit__()
-        self.__enter__()
-        return self
-
-    def __enter__(self):
+    def __enter__(self) -> "VideoCapture":
         if self._video_object:
             return self
         with self._lock:
@@ -58,6 +49,11 @@ class VideoCapture:
             self._video_object = None
         return False
 
+    def restore(self) -> None:
+        if not self.healthy:
+            self.__exit__()
+            self.__enter__()
+
     def activate(self) -> "VideoCapture":
         return self.__enter__()
 
@@ -65,6 +61,8 @@ class VideoCapture:
         return self.__exit__()
 
     def get_frame(self) -> Optional[cv2.Mat]:
+        if not self._video_object or not self.healthy:
+            return None
         with self._lock:
             ret, frame = self._video_object.read()
             if not ret:
@@ -81,7 +79,7 @@ class VideoCapture:
 
     @property
     def healthy(self) -> bool:
-        return self._failures < 60
+        return self._failures < 42
 
     def __iter__(self) -> Iterable[cv2.Mat]:
         while self._video_object.isOpened():
@@ -95,7 +93,7 @@ class VideoCapture:
         while self._video_object.isOpened():
             frame = self.get_frame()
             if frame is None:
-                self.__call__()
+                self.restore()
                 continue
             image = cv2.imencode(".jpg", frame)[1]
             image = image.tobytes()

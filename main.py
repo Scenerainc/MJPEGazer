@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from __future__ import annotations
 
-from flask import Flask, Response, jsonify
+from flask import Flask, Response
 
 from utils import (
     get_logger,
@@ -40,7 +40,7 @@ def live() -> Response:
 def health() -> Response:
     if FRAME_SERVER.healthy:
         return Response("True", status=200)
-    return Response("False", status=503, headers={"Retry-After": 60})
+    return Response("False", status=503)
 
 
 if __name__ == "__main__":

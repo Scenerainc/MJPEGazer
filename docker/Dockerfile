@@ -1,44 +1,36 @@
 FROM ubuntu AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 ENV LANG="C.UTF-8"
 
-RUN apt-get update && apt-get install -y            \
-    curl   python3      python3-pip	python3-venv    \
-    python3-opencv      ffmpeg	         	        \
-    libopencv-highgui-dev    		libavcodec-dev	\
-    libopencv-contrib-dev
-# Potential TODO, find out which of these packages
-# are not required at runtime and move them to the builder stage
+RUN apt-get update                           && \
+    apt-get install -y --no-install-recommends  \
+    curl                                        \
+    python3
 
-FROM base as builder
+FROM base AS builder
 
 COPY requirements.txt .
 
-RUN apt-get update && apt-get install -y            \
-    gcc cpp cmake                                && \
-    python3 -m pip install -U 				        \
-    pip wheel setuptools cmake cython 	         && \
-    mkdir -p /tmp/wheels                         && \
-    python3 -m  pip wheel				            \
-    --no-binary=python-opencv-headless		        \
-    --wheel-dir=/tmp/wheels   			            \
+RUN apt-get install -y                          \
+    python3-pip                                 \
+    python3-venv                             && \
+    python3 -m venv /venv       			 && \
+    /venv/bin/python -m pip install             \
+    --no-cache --prefer-binary -U 				\
     -r requirements.txt gunicorn
-
-RUN python3 -m venv /venv       			     && \
-    /venv/bin/python -m pip install 		        \
-    --find-links=/tmp/wheels --no-cache 			\
-    --prefer-binary -U -r requirements.txt gunicorn
 
 FROM base AS runtime
 
-COPY --from=builder --chown=0:0 --chmod=755         \
-    /venv                       /venv
-
-COPY --chown=0:0    --chmod=555                     \
+COPY --chown=0:0    --chmod=555                 \
     .                           /app
 
-COPY --chown=0:0    --chmod=755                     \
+COPY --from=builder --chown=0:0 --chmod=755     \
+    /venv                       /venv
+
+COPY --chown=0:0    --chmod=755                 \
     docker/gunicorn_config.py   /venv
 
 

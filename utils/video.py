@@ -61,9 +61,9 @@ class VideoCapture:
         return self.__exit__()
 
     def get_frame(self) -> Optional[cv2.Mat]:
-        if not self._video_object or not self.healthy:
-            return None
         with self._lock:
+            if not self._video_object or not self.healthy:
+                return None
             ret, frame = self._video_object.read()
             if not ret:
                 self._failures += 1
@@ -82,7 +82,7 @@ class VideoCapture:
         return self._failures < 42
 
     def __iter__(self) -> Iterable[cv2.Mat]:
-        while self._video_object.isOpened():
+        while True:
             frame = self.get_frame()
             if frame is None:
                 continue
@@ -90,7 +90,7 @@ class VideoCapture:
 
     @property
     def http_frames(self) -> Iterable[bytes]:
-        while self._video_object.isOpened():
+        while True:
             frame = self.get_frame()
             if frame is None:
                 self.restore()

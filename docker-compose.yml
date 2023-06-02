@@ -44,6 +44,8 @@ services:
       - "0.0.0.0:80:80/tcp"
     networks:
       - backend
+    extra_hosts:
+      - "3ae5es0vhclg.net:127.0.0.1"
     labels:
       autoheal: true
 

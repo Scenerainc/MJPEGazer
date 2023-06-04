@@ -3,7 +3,7 @@
 from .logger_utils import get_logger, DEBUG
 from .constants import DEBUG, MIRROR_IMAGE, FLASK_RUN_HOST, FLASK_RUN_PORT, VIDEO_URL
 from .exceptions import Errors, InitializationError
-from .video import VideoCapture
+from .video import Capture, MJPEGFrames
 
 __all__ = [
     "get_logger",
@@ -11,8 +11,9 @@ __all__ = [
     "MIRROR_IMAGE",
     "Errors",
     "InitializationError",
-    "VideoCapture",
+    "Capture",
     "FLASK_RUN_HOST",
     "FLASK_RUN_PORT",
     "VIDEO_URL",
+    "MJPEGFrames",
 ]

@@ -35,7 +35,7 @@ class ContextManager(AbstractContextManager):
         return False
 
 
-class TestHealthCheck(TestCase):
+class TestMJPEG(TestCase):
     def setUp(self):
         video_context_manager = ContextManager()
         self.mjpeg = MJPEGFrames(video_context_manager)
@@ -52,7 +52,7 @@ class TestHealthCheck(TestCase):
         mjpeg_object._failures = 0
         self.assertTrue(mjpeg_object.healthy)
 
-    def test_yield(self):
+    def test_iterator(self):
         mjpeg_object = self.mjpeg
 
         mock: np.ndarray[int, np.generic]

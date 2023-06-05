@@ -8,6 +8,7 @@ Please install the development dependencies
 python3 -m pip install -U -r dev.requirements.txt
 ```
 
+
 to Enable the type checking (import the typechecked decorator from [rtspweb/utils](../rtspweb/utils/development.py)):
 
 Set the environment variable `DEBUG` to `True`
@@ -26,6 +27,14 @@ export DEBUG=True
 > from rtspweb.utils import typechecked
 > ...
 > ```
+
+### Tests
+
+Run the unittests
+
+```sh
+python3 -m unittest discover tests/
+```
 
 ## Core Logic
 

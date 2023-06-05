@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import logging
-from pathlib import Path
 from collections.abc import Callable
-from .constants import DEBUG, LOG_FORMAT, LOG_FILE
+from pathlib import Path
+
+from .constants import DEBUG, LOG_FILE, LOG_FORMAT
 
 
 class Loggers:

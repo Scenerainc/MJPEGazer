@@ -3,7 +3,7 @@
 
 from rtspweb.core import Server
 from rtspweb.utils import get_logger
-from rtspweb.utils.constants import VIDEO_URL, FLASK_RUN_HOST, FLASK_RUN_PORT, DEBUG
+from rtspweb.utils.constants import DEBUG, FLASK_RUN_HOST, FLASK_RUN_PORT, VIDEO_URL
 
 logger = get_logger(__name__)
 

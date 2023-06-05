@@ -2,8 +2,9 @@
 
 from collections.abc import Callable
 from typing import Any
-from .exceptions import Errors
+
 from .constants import DEBUG
+from .exceptions import Errors
 from .loggers import get_logger
 
 logger = get_logger(__name__)

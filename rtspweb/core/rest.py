@@ -7,9 +7,9 @@ from threading import Lock
 from flask import Flask, Response
 
 from rtspweb.utils import get_logger, typechecked
+
 from .capture import Capture
 from .mjpeg import MJPEGFrames
-
 
 LOCK = Lock()
 

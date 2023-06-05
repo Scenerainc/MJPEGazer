@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from typing import overload
 from logging import Logger
+from typing import overload
 
 @overload
 def get_logger(name: str, debug: bool = ...) -> Logger: ...

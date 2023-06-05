@@ -5,8 +5,10 @@ from typing import ByteString, Iterable
 
 import cv2
 from numpy import generic, ndarray
+
 from rtspweb.utils import get_logger, typechecked
-from rtspweb.utils.constants import MIRROR_IMAGE, HEALTH_THRESHOLD
+from rtspweb.utils.constants import HEALTH_THRESHOLD, MIRROR_IMAGE
+
 from .capture import Capture, VideoCapture
 
 logger = get_logger(__name__)

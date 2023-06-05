@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import annotations
-from contextlib import AbstractContextManager, suppress
 
+from contextlib import AbstractContextManager, suppress
 from threading import Lock
 from types import TracebackType
 from typing import Optional, Tuple, Union, overload
@@ -10,7 +10,7 @@ from typing import Optional, Tuple, Union, overload
 import cv2
 from numpy import generic, ndarray
 
-from rtspweb.utils import typechecked, InitializationError, get_logger
+from rtspweb.utils import InitializationError, get_logger, typechecked
 from rtspweb.utils.constants import CV2_CAPABILITIES
 
 logger = get_logger(__name__)

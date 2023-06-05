@@ -7,5 +7,5 @@ bind = f"{host}:{port}"
 
 workers = 2
 threads = 2
-timeout = 10
-# preload_app = True
+timeout = 5
+preload_app = True

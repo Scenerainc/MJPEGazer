@@ -76,6 +76,10 @@ docker compose up -d
 - `FLASK_RUN_PORT`: Flask web server port, (default = `5000`)
 - `VIDEO_URL`: URL to video (default = `webcam://0`)
 
+## Development
+
+Please see the file [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
+
 ## Notes
 
 As OpenCV is not threadsafe and I don't want to increase the complexity of the project, I have limited the capabilities to 1 viewer per instance, if 2 (or more) try to view at the same time, the 2nd will have to wait until the first disconnects

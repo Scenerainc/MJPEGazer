@@ -9,7 +9,7 @@ from numpy import generic, ndarray
 from rtspweb.utils import get_logger, typechecked
 from rtspweb.utils.constants import HEALTH_THRESHOLD, MIRROR_IMAGE
 
-from .capture import Capture, VideoCapture
+from .capture import Capture
 
 logger = get_logger(__name__)
 

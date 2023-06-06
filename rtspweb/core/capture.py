@@ -5,17 +5,15 @@ from __future__ import annotations
 from contextlib import AbstractContextManager, suppress
 from threading import Lock
 from types import TracebackType
-from typing import Optional, Tuple, Union, overload
+from typing import Optional, Tuple, overload
 
 import cv2
 from numpy import generic, ndarray
 
 from rtspweb.utils import InitializationError, get_logger, typechecked
-from rtspweb.utils.constants import CV2_CAPABILITIES
+from rtspweb.utils.constants import CV2_CAPABILITIES, EXC_INFO
 
 logger = get_logger(__name__)
-
-EXC_INFO = Tuple[BaseException | None, BaseException | None, TracebackType | None]
 
 
 @overload
@@ -128,7 +126,7 @@ class Capture(AbstractContextManager):
         bool
             Always True, indicating exceptions should be suppressed.
         """
-        exc_info = (exc_type, exc_val, exc_tb)
+        exc_info: EXC_INFO = (exc_type, exc_val, exc_tb)
         with suppress(AttributeError):
             self._capture.release()
             self._capture = None

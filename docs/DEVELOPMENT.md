@@ -128,13 +128,12 @@ As such, an instance of `MJPEGFrames` essentially represents a stream of MJPEG f
 ```python
 import cv2
 from flask import Flask, Reponse
-from contextlib import AbstractContextManager
-from rtspweb.core import Capture
+from rtspweb.core import Capture, MJPEGFrames
 
 app = Flask(__name__)
-video = Capture("my video url")
+video_capture = Capture("my video url")
 
-MJPEG = MJPEGFrames(video_capturerer)
+MJPEG = MJPEGFrames(video_capture)
 
 @app.route("/live")
 def live(cls) -> Response:

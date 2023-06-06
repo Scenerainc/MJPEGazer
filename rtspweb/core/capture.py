@@ -35,14 +35,46 @@ class VideoCapture:
 
 @typechecked
 class Capture(AbstractContextManager):
+    """Capture class is a context manager for safely handling video capturing operations.
+
+    It allows the capture of video data from a camera port with optional thread-safety.
+    The context manager makes sure that the resources are properly cleaned up after use.
+
+    The `camera_port` is used to specify the source of the video capturing,
+    and could be either a path to a video file or an integer specifying
+    the index of a webcam.
+    NOTE webcam capturing seems to not works on Yorick's laptop anymore.
+
+    Parameters
+    ----------
+    AbstractContextManager : class
+        The base class which provides a mechanism to safely handle resources.
+
+    Returns
+    -------
+    Union[VideoCapture, cv2.VideoCapture]
+        A VideoCapture object.
+
+    Raises
+    ------
+    InitializationError
+        When the video source is not available or not properly initialized.
+
+    Usage:
+    ```python
+    with Capture("my video url") as cap:
+        while cap.isOpened():
+            ret, frame = cap.read()
+            ...
+    """
+
     _port: str
     lock: Lock
     capabilities: set[CV2_CAPABILITIES] = set([cv2.CAP_FFMPEG])
     _capture: VideoCapture | cv2.VideoCapture | None = None
 
     def __init__(self, camera_port: str, lock: Optional[Lock] = None):
-        """
-        Initialize a Capture object.
+        """Initialize a Capture object.
 
         Parameters
         ----------
@@ -54,13 +86,12 @@ class Capture(AbstractContextManager):
         self._port = camera_port
         self._lock = lock
 
-    def __enter__(self) -> Union[VideoCapture, cv2.VideoCapture]:
-        """
-        Context manager entry method.
+    def __enter__(self) -> VideoCapture | cv2.VideoCapture:
+        """Context manager entry method.
 
         Returns
         -------
-        Capture
+        CaptureObject
             A Capture object.
 
         Raises
@@ -81,8 +112,7 @@ class Capture(AbstractContextManager):
         exc_val: Optional[Exception],
         exc_tb: Optional[TracebackType],
     ) -> bool:
-        """
-        Context manager exit method.
+        """Context manager exit method.
 
         Parameters
         ----------
@@ -113,8 +143,7 @@ class Capture(AbstractContextManager):
 
     @property
     def camera_port(self) -> str | int:
-        """
-        Get the camera port.
+        """Get the camera port.
 
         Returns
         -------

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from contextlib import AbstractContextManager
-from typing import ByteString, Iterable
+from typing import ByteString, Generator
 
 import cv2
 from numpy import generic, ndarray
@@ -97,7 +97,7 @@ class MJPEGFrames:
         """
         self.capture_object = capture_object
 
-    def __iter__(self) -> Iterable[ByteString]:
+    def __iter__(self) -> Generator[ByteString, ByteString, ByteString]:
         """
         Return an iterator for the MJPEGFrames object.
 

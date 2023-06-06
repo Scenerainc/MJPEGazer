@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  opencv_server:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        - GIT_COMMIT=${GIT_COMMIT:-Unspecified}
+    expose:
+      - 5000/tcp

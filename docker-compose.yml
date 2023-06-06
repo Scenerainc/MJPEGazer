@@ -2,10 +2,10 @@ version: "3.8"
 
 services:
   opencv_server:
-    image: localhost.local/opencv-server:local
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
+    image: localhost.local/opencv-server:${IMAGE_TAG:-latest}
+    extends:
+      file: docker/build.yml
+      service: opencv_server
     environment:
       - VIDEO_URL=http://webcam.rhein-taunus-krematorium.de/mjpg/video.mjpg
     ports:

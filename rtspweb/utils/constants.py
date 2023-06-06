@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
+"""Constants"""
+
 from __future__ import annotations
 
 from os import getenv
-from types import TracebackType
-from typing import NewType, Optional, Tuple
+from typing import Any, Optional
 
 TRUE_STRINGS: list[str] = [
     str(i).upper()
@@ -16,8 +17,7 @@ TRUE_STRINGS: list[str] = [
     )
 ]
 
-CV2_CAPABILITIES = NewType("CV2_CAPABILITIES", int)  # for example cv2.CAP_FFMPEG
-EXC_INFO = Tuple[BaseException | None, BaseException | None, TracebackType | None]
+CV2_CAPABILITIES = int | Any  # for example cv2.CAP_FFMPEG
 HEALTH_THRESHOLD: int = 42  # Q: Why is this 42?
 # A: https://en.wikipedia.org/wiki/Phrases_from_The_Hitchhiker%27s_Guide_to_the_Galaxy
 # A: In reality, it should probably be less

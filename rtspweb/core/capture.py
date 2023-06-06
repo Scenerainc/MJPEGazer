@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""cv2 Video Capture wrapper"""
+
 from __future__ import annotations
 
 from contextlib import AbstractContextManager, suppress
@@ -11,7 +13,7 @@ import cv2
 from numpy import generic, ndarray
 
 from rtspweb.utils import InitializationError, get_logger, typechecked
-from rtspweb.utils.constants import CV2_CAPABILITIES, EXC_INFO
+from rtspweb.utils.constants import CV2_CAPABILITIES
 
 logger = get_logger(__name__)
 
@@ -24,10 +26,13 @@ class VideoCapture:
     The actual used class is cv2.VideoCapture
     """
 
-    def isOpened() -> bool:
+    # pylint: disable=invalid-name
+    # pylint: disable=missing-function-docstring
+
+    def isOpened(self) -> bool:
         ...
 
-    def read() -> Tuple[bool, ndarray[int, generic]]:
+    def read(self) -> Tuple[bool, ndarray[int, generic]]:
         ...
 
 
@@ -66,6 +71,7 @@ class Capture(AbstractContextManager):
             ...
     """
 
+    # pylint: disable=no-member
     _port: str
     lock: Lock
     capabilities: set[CV2_CAPABILITIES] = set([cv2.CAP_FFMPEG])
@@ -126,7 +132,7 @@ class Capture(AbstractContextManager):
         bool
             Always True, indicating exceptions should be suppressed.
         """
-        exc_info: EXC_INFO = (exc_type, exc_val, exc_tb)
+        exc_info = (exc_type, exc_val, exc_tb)
         with suppress(AttributeError):
             self._capture.release()
             self._capture = None

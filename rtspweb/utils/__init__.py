@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Utilities"""
+
 from . import constants
 from .loggers import get_logger
 from .exceptions import Errors, InitializationError

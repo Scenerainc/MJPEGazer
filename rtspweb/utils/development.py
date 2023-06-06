@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Development utilities"""
+
 from collections.abc import Callable
 from typing import Any
 

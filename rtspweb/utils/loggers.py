@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Logging Utitilies"""
+
 from __future__ import annotations
 
 import logging
@@ -11,12 +13,14 @@ from .constants import DEBUG, LOG_FILE, LOG_FORMAT
 
 class Loggers:
     """
-    The Loggers class manages Python logging.Logger instances for different components in the program.
+    The Loggers class manages Python logging.Logger instances
+    for different components in the program.
 
-    This class serves as a factory for Python logging.Logger instances. Each component in the
-    program can obtain its own Logger instance by calling Loggers.get_logger() with a unique name.
-    The Logger instances are configured with a common log message format and can optionally log messages
-    to a file and/or in debug mode.
+    This class serves as a factory for Python logging.Logger instances.
+    Each component in the program can obtain its own Logger instance
+    by calling Loggers.get_logger() with a unique name.
+    The Logger instances are configured with a common log message format
+    and can optionally log messages to a file and/or in debug mode.
 
     Attributes
     ----------
@@ -55,6 +59,7 @@ class Loggers:
     ```
     """
 
+    # pylint: disable=too-few-public-methods
     loggers: dict[str, logging.Logger] = {}
     _format: str = LOG_FORMAT
     _file: str = LOG_FILE
@@ -69,9 +74,13 @@ class Loggers:
         """
         Returns a Logger instance for the specified name.
 
-        If a Logger instance for the specified name already exists, the existing instance is returned.
-        Otherwise, a new Logger instance is created, configured, and returned. The new Logger instance
-        will log messages in debug mode if the debug parameter is True or if cls._debug is True.
+        If a Logger instance for the specified name already exists,
+        the existing instance is returned.
+
+        Otherwise, a new Logger instance is created, configured, and returned.
+
+        The new Logger instance will log messages in debug mode if:
+            the debug parameter is True or if cls._debug is True.
 
         Parameters
         ----------
@@ -85,7 +94,6 @@ class Loggers:
         logging.Logger
             The Logger instance for the specified name.
         """
-        ...
         debug = debug or cls._debug
         file = cls._file
         if file:

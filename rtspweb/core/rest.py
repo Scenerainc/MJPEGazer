@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Flask"""
+
 from __future__ import annotations
 
 from threading import Lock
@@ -68,13 +70,13 @@ class Server:
 
         Notes
         -----
-        The application could probably serve more 'users' if a MJPEGFrames object is created per request to
-        this function.
+        The application could probably serve more 'users':
+            If a MJPEGFrames object is created per request to this function.
 
-        However, it is also out of scope for this example
-        and as it is MJPEG a Gigabit link can only serve to so many anyway.
+            However, it is also out of scope for this example
+            and as it is MJPEG a Gigabit link can only serve to so many anyway.
 
-        Though this in turn could be 'negated' by lowering the image qualitity
+            Though this in turn could be 'negated' by lowering the image qualitity
         """
         return Response(
             cls.MJPEG,
@@ -82,7 +84,7 @@ class Server:
         )
 
     @classmethod
-    def health(self) -> Response:
+    def health(cls) -> Response:
         """
         Returns a Flask Response object that indicates the health status of the video stream.
 
@@ -92,7 +94,7 @@ class Server:
             A Flask Response object with the health status ("True" or "False") as the response data.
             The HTTP status code is 200 if the video stream is healthy, otherwise it's 503.
         """
-        if self.MJPEG.healthy:
+        if cls.MJPEG.healthy:
             return Response("True", status=200)
         return Response("False", status=503)
 

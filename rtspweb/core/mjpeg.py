@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Motion JPEG frame generation"""
+
 from contextlib import AbstractContextManager
 from typing import ByteString, Generator
 
@@ -18,18 +20,26 @@ logger = get_logger(__name__)
 class MJPEGFrames:
     """MJPEG http multipart 'parts'
 
-    MJPEG, or Motion JPEG, is a video compression format where each video frame is separately compressed as a JPEG image.
-    It's straightforward to use and widely supported, but less efficient than more modern codecs.
+    MJPEG, or Motion JPEG, is a video compression format where
+    each video frame is separately compressed as a JPEG image.
+    It's straightforward to use and widely supported,
+    but less efficient than more modern codecs.
 
-    Multipart headers are part of the MIME (Multipurpose Internet Mail Extensions) standard,
+    Multipart headers are part of the
+        MIME (Multipurpose Internet Mail Extensions) standard,
     used for transferring different types of data over the internet.
-    They allow a single HTTP response to contain multiple different data parts, each with its own headers and content.
+    They allow a single HTTP response to contain multiple different data parts,
+    each with its own headers and content.
 
     In the context of MJPEG,
     multipart headers are often used in live streaming scenarios.
-    A common technique is to stream an MJPEG video over HTTP using "multipart/x-mixed-replace" content-type.
-    Each frame is sent as a separate part of the response, separated by boundaries defined in the multipart header.
-    This allows the video to be streamed continuously, with the client replacing each part (i.e., frame) as it arrives.
+    A common technique is to stream an MJPEG video over HTTP
+        using "multipart/x-mixed-replace" content-type.
+
+    Each frame is sent as a separate part of the response,
+    separated by boundaries defined in the multipart header.
+    This allows the video to be streamed continuously,
+    with the client replacing each part (i.e., frame) as it arrives.
 
     Properties
     ----------
@@ -123,10 +133,8 @@ class MJPEGFrames:
                         continue  # finish this loop
                     self._failures = 0  # Reset health counter
                     if MIRROR_IMAGE:
-                        frame = cv2.flip(frame, 1)
-                    jpeg = cv2.imencode(".jpg", frame)[
-                        1
-                    ]  # TODO find out why this was a list
+                        frame = cv2.flip(frame, 1)  # pylint: disable=no-member
+                    jpeg = cv2.imencode(".jpg", frame)[1]  # pylint: disable=no-member
                     yield (  # Yield payload with '--frame' boundry in header
                         b"--frame\r\n"
                         + b"Content-Type: image/jpeg\r\n\r\n"

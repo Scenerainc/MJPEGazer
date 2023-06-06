@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python3
 
+"""Application Entrypoint"""
+
 from rtspweb.core import Server
 from rtspweb.utils import get_logger
 from rtspweb.utils.constants import DEBUG, FLASK_RUN_HOST, FLASK_RUN_PORT, VIDEO_URL
@@ -16,6 +18,4 @@ if __name__ == "__main__":
         app.run(host=FLASK_RUN_HOST, port=FLASK_RUN_PORT, debug=DEBUG)
     except KeyboardInterrupt:
         pass
-    except Exception as _e:
-        logger.exception(_e)
     logger.info("Exit")

@@ -1,0 +1,47 @@
+[project]
+name = "mjpeg_server"
+version = "0.0.1"
+authors = [
+    { name = "Scenera", email = "info@scenera.net" },
+    { name = "Yorick Meulenbelt", email = "yorick@scenera.net" },
+]
+description = "OpenCV video capturing MJPEG server"
+readme = "README.md"
+classifiers = [
+    "Operating System :: Unix",
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "flask",
+    "opencv-python-headless",
+]
+license.file = "LICENSE"
+
+[project.urls]
+"Home-page" = "https://github.com/Scenerainc/opencv-server/issues"
+"Bug Tracker" = "https://github.com/Scenerainc/opencv-server/issues"
+
+[project.optional-dependencies]
+DEVELOPMENT = [
+    "typeguard",
+    "black",
+]
+
+[tool.setuptools.packages.find]
+include = [
+    "rtspweb*",
+    "docs*",
+    "LICENSE",
+]
+
+[build-system]
+requires = [
+    "setuptools",
+]
+build-backend = "setuptools.build_meta"

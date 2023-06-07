@@ -53,7 +53,7 @@ docker compose up -d
 >
 > ```sh
 > docker build                                  \
->     -t localhost.local/opencv-server:local    \
+>     -t localhost.local/opencv-server:latest    \
 >     --file=docker/Dockerfile                  \
 >     ${GIT_ROOT:-.}
 > ```
@@ -64,7 +64,7 @@ docker compose up -d
 > docker run --rm -it -p 127.0.0.1:5000:5000                                    \
 >     -e "VIDEO_URL=http://webcam.rhein-taunus-krematorium.de/mjpg/video.mjpg"  \
 >     --name opencv-server                                                      \
->     localhost.local/opencv-server:local                                    
+>     localhost.local/opencv-server:latest                                    
 > ```
 
 ## Environment Variables

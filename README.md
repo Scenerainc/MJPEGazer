@@ -1,12 +1,12 @@
 # MJPEGazer
 
-This is an OpenCV HTTP mjpeg server, among others, suitable for viewing RTSP streams in a [(supported)](https://en.wikipedia.org/wiki/Motion_JPEG#Applications) browser.
+This is an OpenCV HTTP MJPEG server, among others, suitable for viewing RTSP streams in a [(supported)](https://en.wikipedia.org/wiki/Motion_JPEG#Applications) browser.
 
 ## License
 
-Please see the [LICENSE file](./LICENSE)
+Please see the [LICENSE](./LICENSE)
 
-## Getting started:
+## Getting started
 
 > Optional
 >
@@ -15,7 +15,7 @@ Please see the [LICENSE file](./LICENSE)
 > ```
 
 ```sh
-python3 -m pip install -r requirements.txt
+python3 -m pip install "."
 ```
 
 ```sh
@@ -57,7 +57,7 @@ docker compose up -d
 >
 > ```sh
 > docker build                                  \
->     -t localhost.local/mjpegazer:local        \
+>     -t localhost.local/mjpegazer:latest       \
 >     --file=docker/Dockerfile                  \
 >     ${GIT_ROOT:-.}
 > ```
@@ -68,12 +68,12 @@ docker compose up -d
 > docker run --rm -it -p 127.0.0.1:5000:5000                                    \
 >     -e "VIDEO_URL=http://webcam.rhein-taunus-krematorium.de/mjpg/video.mjpg"  \
 >     --name MJPEGazer                                                          \
->     localhost.local/mjpegazer:local                                    
+>     localhost.local/mjpegazer:latest                                    
 > ```
 
 ## Environment Variables
 
-- `DEBUG`: Run with debug messages (set to `True` | `yes` | `y` | `1` *case insensitive* to activate. default = `False`)
+- `DEBUG`: Run with debug messages and typechecker (set to `True` | `yes` | `y` | `1` *case insensitive* to activate. default = `False`)
 - `LOG_FILE`: File to log to (default = `None`)
 - `MIRROR_IMAGE`: Mirror image output (set to `True` | `yes` | `y` | `1` *case insensitive* to activate. default = `False`)
 - `FLASK_RUN_HOST`: Flask web server host (default = `127.0.0.1`)
@@ -83,4 +83,3 @@ docker compose up -d
 ## Development
 
 Please see the file [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
-

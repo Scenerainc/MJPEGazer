@@ -24,7 +24,7 @@ dependencies = [
 license.file = "LICENSE"
 
 [project.urls]
-"Home-page" = "https://github.com/Scenerainc/opencv-server/issues"   #   TODO replace with renamed project
+"Home-page" = "https://github.com/Scenerainc/opencv-server/issues"   # TODO replace with renamed project
 "Bug Tracker" = "https://github.com/Scenerainc/opencv-server/issues" # TODO replace with renamed project
 
 [project.optional-dependencies]

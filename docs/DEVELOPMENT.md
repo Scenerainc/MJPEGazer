@@ -2,17 +2,19 @@
 
 ## Develop with
 
-Please install the development version while developing with the library
+Please install the development version while developing with the library, as it includes a typechecker
 
 python3 -m pip install ".[DEVELOPMENT]"
 
 
-### Simple implementation
+### Basic Implementation
 
 ```python3
+from os import environ
 from flask import Flask, Response
-from mjpegazer.core.capture import Capture
-from mjpegazer.core.mjpeg import MJPEGFrames
+
+environ["DEBUG"] = "True"
+from mjpegazer import Capture, MJPEGFrames
 
 app = Flask(__name__)
 
@@ -161,12 +163,9 @@ As such, an instance of `MJPEGFrames` essentially represents a stream of http MJ
 
 ```python
 from flask import Flask, Response
-from mjpegazer.core.capture import Capture
-from mjpegazer.core.mjpeg import MJPEGFrames
-
+from mjpegazer import Capture, MJPEGFrames
 
 app = Flask(__name__)
-
 
 @app.route("/live")
 def live() -> Response:
@@ -178,7 +177,6 @@ def live() -> Response:
         mjpeg_frames,
         mimetype="multipart/x-mixed-replace; boundary=frame",
     )
-
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000)
@@ -208,6 +206,8 @@ The `Server` class in this Flask application acts as the server setup and contro
 #### Example
 
 ```python
+from mjpegazer import Server
+
 Server.configure("my video url")
 app = Server.flask(__name__)
 

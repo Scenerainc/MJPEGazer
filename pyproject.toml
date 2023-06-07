@@ -1,15 +1,15 @@
 [project]
-name = "mjpeg_server"
+name = "MJPEGazer"
 version = "0.0.1"
 authors = [
     { name = "Scenera", email = "info@scenera.net" },
     { name = "Yorick Meulenbelt", email = "yorick@scenera.net" },
 ]
-description = "OpenCV video capturing MJPEG server"
+description = "OpenCV video capturing MJPEG Server"
 readme = "README.md"
 classifiers = [
     "Operating System :: Unix",
-    "Development Status :: 4 - Beta",
+    "Development Status :: 3 - Alpha",
     "Environment :: Web Environment",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
@@ -24,8 +24,8 @@ dependencies = [
 license.file = "LICENSE"
 
 [project.urls]
-"Home-page" = "https://github.com/Scenerainc/opencv-server/issues"
-"Bug Tracker" = "https://github.com/Scenerainc/opencv-server/issues"
+"Home-page" = "https://github.com/Scenerainc/opencv-server/issues"   #   TODO replace with renamed project
+"Bug Tracker" = "https://github.com/Scenerainc/opencv-server/issues" # TODO replace with renamed project
 
 [project.optional-dependencies]
 DEVELOPMENT = [
@@ -35,7 +35,7 @@ DEVELOPMENT = [
 
 [tool.setuptools.packages.find]
 include = [
-    "rtspweb*",
+    "mjpegazer*",
     "docs*",
     "LICENSE",
 ]

@@ -7,13 +7,13 @@ from __future__ import annotations
 from contextlib import AbstractContextManager, suppress
 from threading import Lock
 from types import TracebackType
-from typing import Optional, Tuple, overload
+from typing import Optional, Tuple, Union, overload
 
 import cv2
 from numpy import generic, ndarray
 
-from rtspweb.utils import InitializationError, get_logger, typechecked
-from rtspweb.utils.constants import CV2_CAPABILITIES
+from mjpegazer.utils import InitializationError, get_logger, typechecked
+from mjpegazer.utils.constants import CV2_CAPABILITIES
 
 logger = get_logger(__name__)
 
@@ -24,6 +24,9 @@ class VideoCapture:
     This is just here to satisfy syntax highlighter
 
     The actual used class is cv2.VideoCapture
+
+    NOTE this 'stub' can soon be removed
+    NOTE (OpenCV 5 seems to plan on including type stubs *fingers crossed*)
     """
 
     # pylint: disable=invalid-name
@@ -46,7 +49,6 @@ class Capture(AbstractContextManager):
     The `camera_port` is used to specify the source of the video capturing,
     and could be either a path to a video file or an integer specifying
     the index of a webcam.
-    NOTE webcam capturing seems to not works on Yorick's laptop anymore.
 
     Parameters
     ----------
@@ -72,6 +74,8 @@ class Capture(AbstractContextManager):
     """
 
     # pylint: disable=no-member
+    # NOTE the pylint no member can soon be removed
+    # NOTE (OpenCV 5 seems to plan on including type stubs *fingers crossed*)
     _port: str
     lock: Lock
     capabilities: set[CV2_CAPABILITIES] = set([cv2.CAP_FFMPEG])
@@ -90,7 +94,7 @@ class Capture(AbstractContextManager):
         self._port = camera_port
         self._lock = lock
 
-    def __enter__(self) -> VideoCapture | cv2.VideoCapture:
+    def __enter__(self) -> Union[VideoCapture, cv2.VideoCapture]:
         """Context manager entry method.
 
         Returns

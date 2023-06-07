@@ -1,15 +1,42 @@
 # OpenCV MJPEG Server
 
-## Getting started
+## Develop with
 
-Please install the development dependencies
+Please install the development version while developing with the library
 
-```sh
-python3 -m pip install -U -r dev.requirements.txt
+python3 -m pip install ".[DEVELOPMENT]"
+
+
+### Simple implementation
+
+```python3
+from flask import Flask, Response
+from mjpegazer.core.capture import Capture
+from mjpegazer.core.mjpeg import MJPEGFrames
+
+app = Flask(__name__)
+
+@app.route("/live")
+def live() -> Response:
+    try:
+        video_stream = Capture(
+            "http://webcam.rhein-taunus-krematorium.de/mjpg/video.mjpg"
+        )
+        mjpeg_frames = MJPEGFrames(video_stream)
+        return Response(
+            mjpeg_frames,
+            mimetype="multipart/x-mixed-replace; boundary=frame",
+        )
+    except Exception as _e:
+        return Response(_e, status=503)
+
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5001)
 ```
 
 
-to Enable the type checking (import the typechecked decorator from [rtspweb/utils](../rtspweb/utils/development.py)):
+and Enable the type checking:
 
 Set the environment variable `DEBUG` to `True`
 
@@ -24,11 +51,11 @@ export DEBUG=True
 > 
 > environ["DEBUG"] = "True"
 >
-> from rtspweb.utils import typechecked
+> from mjpegazer.utils import typechecked
 > ...
 > ```
 
-### Tests
+## Tests
 
 Run the unittests
 
@@ -74,7 +101,7 @@ classDiagram
 
 ### Capture
 
-> file: [rtspweb/core/capture.py](../rtspweb/core/capture.py)
+> file: [mjpegazer/core/capture.py](../mjpegazer/core/capture.py)
 
 The `Capture` class is a context manager designed to handle the video capturing process from a specified camera port. This class provides an easy and efficient way of capturing video from different sources with ensured resource cleanup after usage.
 
@@ -98,17 +125,24 @@ with Capture("my video url") as cap:
         ...
 ```
 
+#### Implement one yourself:
 
-## MJPEGFrames
+Please see [mjpegazer/core/capture.py](../mjpegazer/core/capture.py)
 
-> file: [rtspweb/core/mjpeg.py](../rtspweb/core/mjpeg.py)
+The basic gist of what you need is a context manager that on-up `__enter__()`: returns an initialized `cv2.VideoCapture`, or something else with the methods:
+- isOpened() - must return a 'True/False' statement, i.e. while `cv2.VideoCapture().isOpened()`
+- read() - must return a `Tuple` of (`True`, `np.ndarray[int, np.generic]`,) or (`False`, `Any | None | "is ignored"`)
+- release() - can return `Any` (return not used)
+
+### MJPEGFrames
+
+> file: [mjpegazer/core/mjpeg.py](../mjpegazer/core/mjpeg.py)
 
 Before diving into `MJPEGFrames`, let's first understand MJPEG:
 
-MJPEG stands for Motion-JPEG, a video compression format where each video frame (or interlaced field of a video image) is separately compressed as a JPEG image. It's a sequence of JPEG frames without motion compression. The MJPEG format is widely used in video capture devices, including digital cameras and video surveillance systems.
+MJPEG stands for Motion-JPEG, a video compression format where each video frame (or interlaced field of a video image) is separately compressed as a JPEG image. It's a sequence of JPEG frames without motion compression.
 
 Now, let's delve into the `MJPEGFrames` class
-
 
 #### Attributes
 
@@ -118,39 +152,42 @@ Now, let's delve into the `MJPEGFrames` class
 
 3. `__iter__(self) -> Iterable[ByteString]`: This method defines `MJPEGFrames` as an iterable object, meaning you can loop over it to retrieve each frame in sequence. Each iteration yields a byte string with a header with a `--frame` boundry and the frame in the body
 
-4. `healthy(self) -> bool`: This property returns a boolean indicating the health status of the `MJPEGFrames` instance. Each time a frame capture fails, a failure counter increments by 1. If this counter exceeds a predefined limit (as defined in [rtspweb/utils/constants.py under `HEALTH_THRESHOLD`](../rtspweb/utils/constants.py), the `healthy` property will return `False`, indicating an unhealthy status. However, the counter resets to 0 as soon as a new frame is successfully captured, restoring the `healthy` status to `True`.
+4. `healthy(self) -> bool`: This property returns a boolean indicating the health status of the `MJPEGFrames` instance. Each time a frame capture fails, a failure counter increments by 1. If this counter exceeds a predefined limit (as defined in [mjpegazer/utils/constants.py under `HEALTH_THRESHOLD`](../mjpegazer/utils/constants.py)), the `healthy` property will return `False`, indicating an unhealthy status. However, the counter resets to 0 as soon as a new frame is successfully captured, restoring the `healthy` status to `True`.
 
-As such, an instance of `MJPEGFrames` essentially represents a stream of MJPEG frames from a video source. By iterating over the object.
+As such, an instance of `MJPEGFrames` essentially represents a stream of http MJPEG frames from a video source. By iterating over the object.
 
 
 #### Example
 
 ```python
-import cv2
-from flask import Flask, Reponse
-from rtspweb.core import Capture, MJPEGFrames
+from flask import Flask, Response
+from mjpegazer.core.capture import Capture
+from mjpegazer.core.mjpeg import MJPEGFrames
+
 
 app = Flask(__name__)
-video_capture = Capture("my video url")
 
-MJPEG = MJPEGFrames(video_capture)
 
 @app.route("/live")
-def live(cls) -> Response:
+def live() -> Response:
+    video_stream = Capture(
+            "my video url"
+    )
+    mjpeg_frames = MJPEGFrames(video_stream)
     return Response(
-        MJPEG,
+        mjpeg_frames,
         mimetype="multipart/x-mixed-replace; boundary=frame",
     )
 
-if __name__ == '__main__':
-    app.run(host="127.0.0.1", port=5000)
 
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5000)
 ```
 
 
 ### Server
 
-> file: [rtspweb/core/rest.py](../rtspweb/core/rest.py)
+> file: [mjpegazer/core/rest.py](../mjpegazer/core/rest.py)
 
 The `Server` class in this Flask application acts as the server setup and control center. It configures the video stream, provides access to the live video, reports the health status, and manages the Flask app creation and route setup.
 
@@ -177,3 +214,7 @@ app = Server.flask(__name__)
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000)
 ```
+
+### Other Notes
+
+As OpenCV is not threadsafe (should be, yet doesn't handle it well when multiple calls are being made to it at the same time) and I don't want to increase the complexity of the project, I have limited the capabilities to 1 viewer per instance, if 2 (or more) try to view at the same time, the 2nd will have to wait until the first disconnects

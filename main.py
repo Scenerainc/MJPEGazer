@@ -3,19 +3,23 @@
 
 """Application Entrypoint"""
 
-from rtspweb.core import Server
-from rtspweb.utils import get_logger
-from rtspweb.utils.constants import DEBUG, FLASK_RUN_HOST, FLASK_RUN_PORT, VIDEO_URL
+from mjpegazer import Server
+from mjpegazer.utils import get_logger, constants
+
 
 logger = get_logger(__name__)
 
 
-Server.configure(VIDEO_URL)
+Server.configure(constants.VIDEO_URL)
 app = Server.flask(__name__)
 
 if __name__ == "__main__":
     try:
-        app.run(host=FLASK_RUN_HOST, port=FLASK_RUN_PORT, debug=DEBUG)
+        app.run(
+            host=constants.FLASK_RUN_HOST,
+            port=constants.FLASK_RUN_PORT,
+            debug=constants.DEBUG,
+        )
     except KeyboardInterrupt:
         pass
     logger.info("Exit")

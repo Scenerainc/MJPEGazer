@@ -1,6 +1,6 @@
-# opencv-server
+# MJPEGazer
 
-This is an OpenCV HTTP mjpeg server, suitable for viewing RTSP streams in a (supported) browser.
+This is an OpenCV HTTP mjpeg server, among others, suitable for viewing RTSP streams in a [(supported)](https://en.wikipedia.org/wiki/Motion_JPEG#Applications) browser.
 
 ## License
 
@@ -57,7 +57,7 @@ docker compose up -d
 >
 > ```sh
 > docker build                                  \
->     -t localhost.local/opencv-server:local    \
+>     -t localhost.local/mjpegazer:local        \
 >     --file=docker/Dockerfile                  \
 >     ${GIT_ROOT:-.}
 > ```
@@ -67,8 +67,8 @@ docker compose up -d
 > ```sh
 > docker run --rm -it -p 127.0.0.1:5000:5000                                    \
 >     -e "VIDEO_URL=http://webcam.rhein-taunus-krematorium.de/mjpg/video.mjpg"  \
->     --name opencv-server                                                      \
->     localhost.local/opencv-server:local                                    
+>     --name MJPEGazer                                                          \
+>     localhost.local/mjpegazer:local                                    
 > ```
 
 ## Environment Variables
@@ -84,6 +84,3 @@ docker compose up -d
 
 Please see the file [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
 
-## Notes
-
-As OpenCV is not threadsafe and I don't want to increase the complexity of the project, I have limited the capabilities to 1 viewer per instance, if 2 (or more) try to view at the same time, the 2nd will have to wait until the first disconnects

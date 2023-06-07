@@ -3,13 +3,13 @@
 """Motion JPEG frame generation"""
 
 from contextlib import AbstractContextManager
-from typing import ByteString, Generator
+from typing import ByteString, Iterable
 
 import cv2
 from numpy import generic, ndarray
 
-from rtspweb.utils import get_logger, typechecked
-from rtspweb.utils.constants import HEALTH_THRESHOLD, MIRROR_IMAGE
+from mjpegazer.utils import get_logger, typechecked
+from mjpegazer.utils.constants import HEALTH_THRESHOLD, MIRROR_IMAGE
 
 from .capture import Capture
 
@@ -58,31 +58,19 @@ class MJPEGFrames:
     import cv2
     from flask import Flask, Reponse
     from contextlib import AbstractContextManager
-    from .mjpeg import VideoCapturerer
+    from mjpegazer.core.capture import Capture
+    from mjpegazer.core.mjpeg import MJPEGFrames
 
-    class VideoCapture(AbstractContextManager):
-        # This class can safely be ignored,
-        # as it does not relate to the usage of the MJPEGFrames class
-        # Please see the documentation of VideoCapturer
-        def __init__(self, url: str):
-            self._capture = cv2.VideoCapture(url)
 
-        def __enter__(self) -> cv2.VideoCapture:
-            return self._capture
-
-        def __exit__(self, *_):
-            return False
-
-    video = VideoCapturerer("http://webcam.rhein-taunus-krematorium.de/mjpg/video.mjpg")
-
-    # Start of the actual example
     app = Flask(__name__)
-    MJPEG = MJPEGFrames(video_capturerer)
+
 
     @app.route("/live")
-    def live(cls) -> Response:
+    def live() -> Response:
+        video_stream = Capture("my video url")
+        mjpeg_frames = MJPEGFrames(video_stream)
         return Response(
-            MJPEG,
+            mjpeg_frames,
             mimetype="multipart/x-mixed-replace; boundary=frame",
         )
 
@@ -107,7 +95,7 @@ class MJPEGFrames:
         """
         self.capture_object = capture_object
 
-    def __iter__(self) -> Generator[ByteString, ByteString, ByteString]:
+    def __iter__(self) -> Iterable[ByteString]:
         """
         Return an iterator for the MJPEGFrames object.
 

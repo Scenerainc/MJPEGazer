@@ -8,6 +8,12 @@ Please install the development version while developing with the library, as it 
 python3 -m pip install ".[DEVELOPMENT]"
 ```
 
+> Alternatively
+>
+> ```sh
+> python3 -m pip install "git+ssh://git@github.com/Scenerainc/MJPEGazer[DEVELOPMENT]"
+> ```
+
 ### Basic Usage
 
 ```python

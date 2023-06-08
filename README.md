@@ -8,18 +8,26 @@ Please see the [LICENSE](./LICENSE)
 
 ## Getting started
 
-> Optional
+### Natively
+
+> Optional, create a venv.
 >
 > ```sh
 > python3 -m venv .venv
 > ```
 
+Install the package.
+
 ```sh
 python3 -m pip install "."
 ```
 
+Run the basic implementation.
+
 ```sh
-VIDEO_URL="webcam://0" python3 main.py
+export "VIDEO_URL=http://webcam.rhein-taunus-krematorium.de/mjpg/video.mjpg"
+
+python3 main.py
 ```
 
 > alternatively
@@ -73,7 +81,7 @@ docker compose up -d
 
 ## Environment Variables
 
-- `DEBUG`: Run with debug messages and typechecker (set to `True` | `yes` | `y` | `1` *case insensitive* to activate. default = `False`)
+- `DEBUG`: Run with debug messages (set to `True` | `yes` | `y` | `1` *case insensitive* to activate. default = `False`)
 - `LOG_FILE`: File to log to (default = `None`)
 - `MIRROR_IMAGE`: Mirror image output (set to `True` | `yes` | `y` | `1` *case insensitive* to activate. default = `False`)
 - `FLASK_RUN_HOST`: Flask web server host (default = `127.0.0.1`)

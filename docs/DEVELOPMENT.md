@@ -7,7 +7,8 @@ Please install the development version while developing with the library, as it 
 python3 -m pip install ".[DEVELOPMENT]"
 
 
-### Basic Implementation
+### Basic Usage
+
 
 ```python3
 from os import environ

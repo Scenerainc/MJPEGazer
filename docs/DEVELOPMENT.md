@@ -50,8 +50,7 @@ export DEBUG=True
 > 
 > environ["DEBUG"] = "True"
 >
-> from mjpegazer.utils import typechecked
-> ...
+> from mjpegazer import ...
 > ```
 
 ## Tests

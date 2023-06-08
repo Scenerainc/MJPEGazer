@@ -150,7 +150,8 @@ Now, let's delve into the `MJPEGFrames` class
 
 4. `healthy(self) -> bool`: This property returns a boolean indicating the health status of the `MJPEGFrames` instance. Each time a frame capture fails, a failure counter increments by 1. If this counter exceeds a predefined limit (as defined in [mjpegazer/utils/constants.py under `HEALTH_THRESHOLD`](../mjpegazer/utils/constants.py)), the `healthy` property will return `False`, indicating an unhealthy status. However, the counter resets to 0 as soon as a new frame is successfully captured, restoring the `healthy` status to `True`.
 
-As such, an instance of `MJPEGFrames` essentially represents a stream of http MJPEG frames from a video source. By iterating over the object.
+As such, an instance of `MJPEGFrames` essentially represents a stream of http MJPEG frames from a video source (accessible by iterating over the object).
+
 
 
 #### Example

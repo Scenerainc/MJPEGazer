@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   opencv_server:
-    image: localhost.local/opencv-server:${IMAGE_TAG:-latest}
+    image: localhost.local/mjpegazer:${IMAGE_TAG:-latest}
     extends:
       file: docker/build.yml
       service: opencv_server

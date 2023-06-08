@@ -3,9 +3,9 @@ from re import L
 from unittest import TestCase
 
 import cv2
-from rtspweb.core import MJPEGFrames
+from mjpegazer.core import MJPEGFrames
 import numpy as np
-from rtspweb.utils.constants import HEALTH_THRESHOLD
+from mjpegazer.utils.constants import HEALTH_THRESHOLD
 
 MOCK_IMAGE = np.random.randint(0, 256, (100, 100), dtype=np.uint8)
 

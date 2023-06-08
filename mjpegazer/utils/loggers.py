@@ -36,7 +36,7 @@ class Loggers:
     Usage
     -----
     ```python
-    from rtspweb import get_logger
+    from mjpegazer import get_logger
     logger = get_logger(__name__)
 
     def my_func(a: int, b: int):

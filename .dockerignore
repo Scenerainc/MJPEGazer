@@ -2,6 +2,6 @@
 !requirements.txt
 !docker/gunicorn_config.py
 !LICENSE
-!rtspweb/**
+!mjpegazer/**
 !*.py
 !README.md

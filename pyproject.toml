@@ -1,0 +1,47 @@
+[project]
+name = "MJPEGazer"
+version = "0.0.1"
+authors = [
+    { name = "Scenera", email = "info@scenera.net" },
+    { name = "Yorick Meulenbelt", email = "yorick@scenera.net" },
+]
+description = "OpenCV video capturing MJPEG Server"
+readme = "README.md"
+classifiers = [
+    "Operating System :: Unix",
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "flask",
+    "opencv-python-headless",
+]
+license.file = "LICENSE"
+
+[project.urls]
+"Home-page" = "https://github.com/Scenerainc/opencv-server/issues"   # TODO replace with renamed project
+"Bug Tracker" = "https://github.com/Scenerainc/opencv-server/issues" # TODO replace with renamed project
+
+[project.optional-dependencies]
+DEVELOPMENT = [
+    "typeguard",
+    "black",
+]
+
+[tool.setuptools.packages.find]
+include = [
+    "mjpegazer*",
+    "docs*",
+    "LICENSE",
+]
+
+[build-system]
+requires = [
+    "setuptools",
+]
+build-backend = "setuptools.build_meta"

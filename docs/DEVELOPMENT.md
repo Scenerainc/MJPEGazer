@@ -217,4 +217,4 @@ if __name__ == "__main__":
 
 ### Other Notes
 
-As OpenCV is not threadsafe (should be, yet doesn't handle it well when multiple calls are being made to it at the same time) and I don't want to increase the complexity of the project, I have limited the capabilities to 1 viewer per instance, if 2 (or more) try to view at the same time, the 2nd will have to wait until the first disconnects
+As OpenCV is not threadsafe (should be, yet doesn't handle it well when multiple calls are being made to it at the same time) and I don't want to increase the complexity of the project, I have limited the capabilities to 1 viewer per instance. If 2 (or more) try to view at the same time, the 2nd will have to wait until the first disconnects

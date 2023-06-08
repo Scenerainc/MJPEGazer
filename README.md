@@ -10,10 +10,18 @@ Please see the [LICENSE](./LICENSE)
 
 ### Natively
 
-> Optional, create a venv.
+> Optional
+>
+> Create a venv.
 >
 > ```sh
 > python3 -m venv .venv
+> ```
+>
+> Activate the venv.
+>
+> ```sh
+> source .venv/bin/activate
 > ```
 
 Install the package.

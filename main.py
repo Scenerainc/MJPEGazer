@@ -11,7 +11,7 @@ logger = get_logger(__name__)
 
 
 Server.configure(constants.VIDEO_URL)
-app = Server.flask(__name__)
+app = Server.flask(__name__, health_route="/health", live_route="/live")
 
 if __name__ == "__main__":
     try:

@@ -42,7 +42,7 @@ class Server:
     MJPEG: MJPEGFrames
 
     @classmethod
-    def configure(cls, video_url: str, lock: Lock = LOCK):
+    def configure(cls, video_url: str, lock: Lock = LOCK) -> None:
         """
         Configures the Server class by initializing a MJPEGFrames object.
 
@@ -78,10 +78,14 @@ class Server:
 
             Though this in turn could be 'negated' by lowering the image qualitity
         """
-        return Response(
-            cls.MJPEG,
-            mimetype="multipart/x-mixed-replace; boundary=frame",
-        )
+        try:
+            return Response(
+                cls.MJPEG,
+                mimetype="multipart/x-mixed-replace; boundary=frame",
+            )
+        except Exception as _e:
+            logger.exception(_e)
+            raise _e from _e
 
     @classmethod
     def health(cls) -> Response:
@@ -94,12 +98,21 @@ class Server:
             A Flask Response object with the health status ("True" or "False") as the response data.
             The HTTP status code is 200 if the video stream is healthy, otherwise it's 503.
         """
-        if cls.MJPEG.healthy:
-            return Response("True", status=200)
-        return Response("False", status=503)
+        try:
+            if cls.MJPEG.healthy:
+                return Response("True", status=200)
+            return Response("False", status=503)
+        except Exception as _e:
+            logger.exception(_e)
+            raise _e from _e
 
     @classmethod
-    def flask(cls, name: str) -> Flask:
+    def flask(
+        cls,
+        name: str,
+        live_route: str = "/live",
+        health_route: str = "/health",
+    ) -> Flask:
         """
         Returns a Flask application that is ready to serve the video stream.
 
@@ -114,6 +127,6 @@ class Server:
             A Flask application with the '/live' and '/health' endpoints configured.
         """
         app = Flask(name)
-        app.add_url_rule("/live", view_func=cls.live)
-        app.add_url_rule("/health", view_func=cls.health)
+        app.add_url_rule(live_route, view_func=cls.live)
+        app.add_url_rule(health_route, view_func=cls.health)
         return app

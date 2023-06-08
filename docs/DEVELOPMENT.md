@@ -2,43 +2,40 @@
 
 ## Develop with
 
-Please install the development version while developing with the library, as it includes a typechecker
+Please install the development version while developing with the library, as it includes a typechecker.
 
 python3 -m pip install ".[DEVELOPMENT]"
 
 
 ### Basic Implementation
 
-```python3
+```python
 from os import environ
 from flask import Flask, Response
-
-environ["DEBUG"] = "True"
 from mjpegazer import Capture, MJPEGFrames
 
 app = Flask(__name__)
 
 @app.route("/live")
 def live() -> Response:
-    try:
-        video_stream = Capture(
-            "http://webcam.rhein-taunus-krematorium.de/mjpg/video.mjpg"
-        )
-        mjpeg_frames = MJPEGFrames(video_stream)
-        return Response(
-            mjpeg_frames,
-            mimetype="multipart/x-mixed-replace; boundary=frame",
-        )
-    except Exception as _e:
-        return Response(_e, status=503)
+    video_stream = Capture(
+        "http://webcam.rhein-taunus-krematorium.de/mjpg/video.mjpg",
+    )
+
+    mjpeg_frames = MJPEGFrames(video_stream)
+    return Response(
+        mjpeg_frames,
+        mimetype="multipart/x-mixed-replace; boundary=frame",
+    )
+
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5001)
+    app.run(host="127.0.0.1", port=5000)
 ```
 
 
-and Enable the type checking:
+### Enable type checking
 
 Set the environment variable `DEBUG` to `True`
 
@@ -132,7 +129,7 @@ with Capture("my video url") as cap:
 Please see [mjpegazer/core/capture.py](../mjpegazer/core/capture.py)
 
 The basic gist of what you need is a context manager that on-up `__enter__()`: returns an initialized `cv2.VideoCapture`, or something else with the methods:
-- isOpened() - must return a 'True/False' statement, i.e. while `cv2.VideoCapture().isOpened()`
+- isOpened() - must return a 'True/False' statement, i.e. `while cv2.VideoCapture().isOpened()`
 - read() - must return a `Tuple` of (`True`, `np.ndarray[int, np.generic]`,) or (`False`, `Any | None | "is ignored"`)
 - release() - can return `Any` (return not used)
 
@@ -217,4 +214,5 @@ if __name__ == "__main__":
 
 ### Other Notes
 
-As OpenCV is not threadsafe (should be, yet doesn't handle it well when multiple calls are being made to it at the same time) and I don't want to increase the complexity of the project, I have limited the capabilities to 1 viewer per instance, if 2 (or more) try to view at the same time, the 2nd will have to wait until the first disconnects
+1. as OpenCV is not threadsafe (should be, yet doesn't handle it well when multiple `read()` callss are being made to the same object) and I don't want to increase the complexity of the project, I have limited the capabilities to 1 viewer per instance. if 2 (or more) try to view at the same time, the 2nd will have to wait until the first disconnects
+  > This limitation only goes for the default implementation, the example at [Basic Usage](#basic-usage) does not suffer this limitation as a `Capture` and `MJPEGFrames` object is create per call to the method.

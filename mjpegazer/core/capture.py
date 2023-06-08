@@ -79,7 +79,7 @@ class Capture(AbstractContextManager):
     _port: str
     lock: Lock
     capabilities: set[CV2_CAPABILITIES] = set([cv2.CAP_FFMPEG])
-    _capture: VideoCapture | cv2.VideoCapture | None = None
+    _capture: Union[VideoCapture, cv2.VideoCapture, None] = None
 
     def __init__(self, camera_port: str, lock: Optional[Lock] = None):
         """Initialize a Capture object.
@@ -150,7 +150,7 @@ class Capture(AbstractContextManager):
         return True
 
     @property
-    def camera_port(self) -> str | int:
+    def camera_port(self) -> Union[str, int]:
         """Get the camera port.
 
         Returns

@@ -3,7 +3,7 @@
 """Motion JPEG frame generation"""
 
 from contextlib import AbstractContextManager
-from typing import ByteString, Iterable
+from typing import ByteString, Iterable, Union
 
 import cv2
 from numpy import generic, ndarray
@@ -81,10 +81,10 @@ class MJPEGFrames:
 
     """
 
-    capture_object: Capture | AbstractContextManager
+    capture_object: Union[Capture, AbstractContextManager]
     _failures: int = 0
 
-    def __init__(self, capture_object: Capture | AbstractContextManager):
+    def __init__(self, capture_object: Union[Capture, AbstractContextManager]):
         """
         Initialize an MJPEGFrames object.
 

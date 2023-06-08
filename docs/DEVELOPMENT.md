@@ -11,7 +11,6 @@ python3 -m pip install ".[DEVELOPMENT]"
 
 
 ```python
-from os import environ
 from flask import Flask, Response
 from mjpegazer import Capture, MJPEGFrames
 

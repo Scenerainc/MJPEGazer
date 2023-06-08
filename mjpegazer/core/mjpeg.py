@@ -104,14 +104,14 @@ class MJPEGFrames:
         Iterable[ByteString]
             JPEG image bytes packaged as parts of an HTTP MJPEG multipart stream.
         """
-        ## ------------------- NOTE ------------------- ##
-        ## For the typechecking, highlighting, etc      ##
+        ## ------------------- NOTE ---------- ##
+        ## For the typechecking, linting, etc  ##
         frame: ndarray[int, generic]
         jpeg: ndarray[int, generic]
-        ## -------------------------------------------- ##
+        # pylint: disable=no-member
+        ## ----------------------------------- ##
 
-        with self.capture_object as cap:  # get cv2 video capture object from the context manager,
-            #                               maybe make a sub file for syntax highlighting?
+        with self.capture_object as cap:  # get the cv2.VideoCapture object from the context manager
             while cap.isOpened():
                 try:
                     ret, frame = cap.read()
@@ -121,8 +121,8 @@ class MJPEGFrames:
                         continue  # finish this loop
                     self._failures = 0  # Reset health counter
                     if MIRROR_IMAGE:
-                        frame = cv2.flip(frame, 1)  # pylint: disable=no-member
-                    jpeg = cv2.imencode(".jpg", frame)[1]  # pylint: disable=no-member
+                        frame = cv2.flip(frame, 1)
+                    jpeg = cv2.imencode(".jpg", frame)[1]
                     yield (  # Yield payload with '--frame' boundry in header
                         b"--frame\r\n"
                         + b"Content-Type: image/jpeg\r\n\r\n"
@@ -130,7 +130,7 @@ class MJPEGFrames:
                         + b"\r\n"
                     )
                 except GeneratorExit:
-                    break
+                    break  # graceful exit
 
     @property
     def healthy(self) -> bool:

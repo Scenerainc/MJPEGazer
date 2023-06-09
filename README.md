@@ -33,7 +33,7 @@ python3 -m pip install "."
 > Alternatively
 >
 > ```sh
-> python3 -m pip install git+ssh://git@github.com/Scenerainc/MJPEGazer
+> python3 -m pip install git+https://github.com/Scenerainc/MJPEGazer
 > ```
 
 Run the basic implementation.

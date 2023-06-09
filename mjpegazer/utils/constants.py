@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from os import getenv
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 TRUE_STRINGS: list[str] = [
     str(i).upper()
@@ -17,7 +17,7 @@ TRUE_STRINGS: list[str] = [
     )
 ]
 
-CV2_CAPABILITIES = int | Any  # for example cv2.CAP_FFMPEG
+CV2_CAPABILITIES = Union[int, Any]  # for example cv2.CAP_FFMPEG
 HEALTH_THRESHOLD: int = 42  # Q: Why is this 42?
 # A: https://en.wikipedia.org/wiki/Phrases_from_The_Hitchhiker%27s_Guide_to_the_Galaxy
 # A: In reality, it should probably be less

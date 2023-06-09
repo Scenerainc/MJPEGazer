@@ -2,6 +2,8 @@
 
 """Motion JPEG frame generation"""
 
+from __future__ import annotations
+
 from contextlib import AbstractContextManager
 from typing import ByteString, Iterable, Union
 

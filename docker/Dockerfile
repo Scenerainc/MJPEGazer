@@ -19,9 +19,9 @@ RUN apt-get update && apt-get install -y        \
     python3-pip                                 \
     python3-venv                             && \
     rm -rf /var/lib/apt/lists/*              && \
-    python3 -m venv /venv       			 && \
+    python3 -m venv /venv                    && \
     /venv/bin/python -m pip install             \
-    --no-cache --prefer-binary -U 				\
+    --no-cache --prefer-binary -U               \
     -r requirements.txt gunicorn
 
 FROM base AS runtime
@@ -50,7 +50,12 @@ FROM runtime
 ARG GIT_COMMIT=unspecified
 LABEL GIT_COMMIT=$GIT_COMMIT
 
-HEALTHCHECK --start-period=10s --interval=5s --retries=3 CMD curl -fs http://localhost:${FLASK_RUN_PORT}/health || exit 1
+HEALTHCHECK                                     \
+    --start-period=10s                          \
+    --interval=5s                               \
+    --retries=3                                 \
+    CMD curl --fail --silent                    \ 
+    http://localhost:${FLASK_RUN_PORT}/health || exit 1
 
 WORKDIR /app
 USER 1010:1010

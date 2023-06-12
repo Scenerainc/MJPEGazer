@@ -10,10 +10,18 @@ Please see the [LICENSE](./LICENSE)
 
 ### Natively
 
-> Optional, create a venv.
+> Optional
+>
+> Create a venv.
 >
 > ```sh
 > python3 -m venv .venv
+> ```
+>
+> Activate the venv.
+>
+> ```sh
+> source .venv/bin/activate
 > ```
 
 Install the package.
@@ -21,6 +29,12 @@ Install the package.
 ```sh
 python3 -m pip install "."
 ```
+
+> Alternatively
+>
+> ```sh
+> python3 -m pip install git+https://github.com/Scenerainc/MJPEGazer
+> ```
 
 Run the basic implementation.
 
